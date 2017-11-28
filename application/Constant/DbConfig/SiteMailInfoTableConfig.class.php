@@ -8,7 +8,7 @@
 
  namespace Constant\DbConfig;
 
- class SiteMailInfoConfig
+ class SiteMailInfoTableConfig
  {
      const TABLE_NAME = "mail";
      
@@ -21,6 +21,6 @@
          'new_mail' => 'tinyint',
          'reply' => 'tinyint',
          'in_date' => 'datetime',
-         'defunct' => 'char',
+         'defunct' => 'char'
      );
  }

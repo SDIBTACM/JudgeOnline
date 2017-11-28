@@ -8,7 +8,7 @@
 
  namespace Constant\DbConfig;
 
- class SiteNewsConfig
+ class SiteNewsTableConfig
  {
      const TABLE_NAME = "news";
 
@@ -19,6 +19,6 @@
          'content' => 'text',
          'time' => 'datetime',
          'importance' => 'tinyint',
-         'defunct' => 'char',
+         'defunct' => 'char'
      );
  }

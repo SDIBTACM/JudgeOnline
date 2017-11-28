@@ -8,7 +8,7 @@
 
  namespace Constant\DbConfig;
 
- class ProblemInfoConfig 
+ class ProblemInfoTableConfig 
  {
      const TABLE_NAME = "problem";
 

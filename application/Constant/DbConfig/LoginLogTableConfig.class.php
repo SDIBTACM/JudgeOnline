@@ -8,7 +8,7 @@
 
  namespace Constant\DbConfig;
 
- class LoginLogConfig 
+ class LoginLogTableConfig 
  {
      const TABLE_NAME = "loginlog";
 
@@ -16,6 +16,6 @@
         'user_id' => 'varchar',
         'password' => 'blob',
         'ip' => 'varchar',
-        'time' => 'datetime',
+        'time' => 'datetime'
      );
  }

@@ -8,7 +8,7 @@
 
  namespace Constant\Dbconfig;
 
- class ContestInfoConfig
+ class ContestInfoTableConfig
  {
      const TABLE_NAME = "contest";
 
@@ -22,6 +22,6 @@
          'private' => 'tinyint',
          'langmask' => 'tinyint',
          'reg_start_time' => 'datetime',
-         'reg_end_time' => 'datetime',
-     )
+         'reg_end_time' => 'datetime'
+     );
  }

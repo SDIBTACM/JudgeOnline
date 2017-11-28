@@ -8,13 +8,13 @@
 
  namespace Constant\DbConfig;
 
- class UserPrivilegeConfig 
+ class UserPrivilegeTableConfig 
  {
      const TABLE_NAME = "privilege";
 
      public static $TABLE_FILED = array(
          'user_id' => 'char',
          'rightstr' => 'char',
-         'defunct' => 'char',
+         'defunct' => 'char'
      );
  }

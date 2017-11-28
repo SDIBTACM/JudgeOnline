@@ -8,12 +8,12 @@
 
  namespace Constant\DbConfig;
 
- class CompliErrorInfoConfig 
+ class CompliErrorInfoTableConfig 
  {
      const TABLE_NAME = "compileinfo";
 
      public static $TABLE_FILED = array(
          'solution_id' => 'int',
-         'error' => 'text',
+         'error' => 'text'
      );
  }

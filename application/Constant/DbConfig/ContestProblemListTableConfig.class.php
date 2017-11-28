@@ -8,7 +8,7 @@
 
  namespace Constant\DbConfig;
  
- class ContestProblemListConfig 
+ class ContestProblemListTableConfig 
  {
      const TABLE_NAME = "contest_problem";
 
@@ -16,6 +16,6 @@
          'problem_id' => 'int',
          'contest_id' => 'int',
          'title' => 'char',
-         'num' => 'int',
+         'num' => 'int'
      );
  }

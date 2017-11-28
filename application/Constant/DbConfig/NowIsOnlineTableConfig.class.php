@@ -8,7 +8,7 @@
 
  namespace Constant\DbConfig;
 
- class NowIsOnlineConfig 
+ class NowIsOnlineTableConfig 
  {
      const TABLE_NAME = "online";
 
@@ -19,6 +19,6 @@
         'refer' => 'varchar',
         'lastmove' => 'int',
         'firsttime' => 'int',
-        'uri' => 'varchar',
+        'uri' => 'varchar'
      );
  }

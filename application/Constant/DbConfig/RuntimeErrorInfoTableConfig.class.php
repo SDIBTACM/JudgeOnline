@@ -8,12 +8,12 @@
 
  namespace Constant\Dbconfig;
 
- class RuntimeErrorInfoConfig 
+ class RuntimeErrorTableInfoConfig 
  {
      const TABLE_NAME = "runtimeinfo";
 
      public static $TABLE_FILED = array(
          'solution_id' => 'int',
-         'error' => 'text',
+         'error' => 'text'
      );
  }
