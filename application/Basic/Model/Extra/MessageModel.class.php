@@ -9,7 +9,10 @@
 namespace Basic\Model\Extra;
 
 
-class MessageModel
+use Basic\Constant\DataBaseTableConfig;
+use Basic\Model\BasicBaseModel;
+
+class MessageModel extends BasicBaseModel
 {
     private static $_instance = null;
 
@@ -26,7 +29,13 @@ class MessageModel
         return self::$_instance;
     }
 
-    public function test() {
-        echo __CLASS__;
+    protected function getTableName() {
+        return DataBaseTableConfig::EXTRA_MESSAGE;
     }
+
+    protected function getPrimaryId() {
+        return "message_id";
+    }
+
+
 }

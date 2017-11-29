@@ -9,9 +9,8 @@
 namespace Basic\Constant;
 
 
-class DataBaseTableConfig
+abstract class DataBaseTableConfig
 {
-
     // for User
     const USER_PRIVILEGE = "privilege";
     const USER_USERS = "users";

@@ -9,7 +9,10 @@
 namespace Basic\Model\Contest;
 
 
-class ContestModel
+use Basic\Constant\DataBaseTableConfig;
+use Basic\Model\BasicBaseModel;
+
+class ContestModel extends BasicBaseModel
 {
     private static $_instance = null;
 
@@ -26,7 +29,11 @@ class ContestModel
         return self::$_instance;
     }
 
-    public function test() {
-        echo __CLASS__;
+    protected function getTableName() {
+        return DataBaseTableConfig::CONTEST_CONTEST;
+    }
+
+    protected function getPrimaryId() {
+        return "contest_id";
     }
 }

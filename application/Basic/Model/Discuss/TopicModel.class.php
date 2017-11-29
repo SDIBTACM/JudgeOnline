@@ -9,7 +9,10 @@
 namespace Basic\Model\Discuss;
 
 
-class TopicModel
+use Basic\Constant\DataBaseTableConfig;
+use Basic\Model\BasicBaseModel;
+
+class TopicModel extends BasicBaseModel
 {
     private static $_instance = null;
 
@@ -26,7 +29,11 @@ class TopicModel
         return self::$_instance;
     }
 
-    public function test() {
-        echo __CLASS__;
+    protected function getTableName() {
+        return DataBaseTableConfig::DISCUSS_TOPIC;
+    }
+
+    protected function getPrimaryId() {
+        return "rid";
     }
 }

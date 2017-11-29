@@ -9,7 +9,10 @@
 namespace Basic\Model\Problem;
 
 
-class ProblemModel
+use Basic\Constant\DataBaseTableConfig;
+use Basic\Model\BasicBaseModel;
+
+class ProblemModel extends BasicBaseModel
 {
     private static $_instance = null;
 
@@ -26,7 +29,13 @@ class ProblemModel
         return self::$_instance;
     }
 
-    public function test() {
-        echo __CLASS__;
+    protected function getTableName() {
+        return DataBaseTableConfig::PROBLEM_PROBLEM;
     }
+
+    protected function getPrimaryId() {
+        return "problem_id";
+    }
+
+
 }

@@ -3,16 +3,16 @@
  * drunk , fix later
  * Created by Magic.
  * User: jiaying
- * Datetime: 28/11/2017 01:00
+ * Datetime: 29/11/2017 23:34
  */
 
-namespace Basic\Model\User;
+namespace Basic\Model\Contest;
 
 
 use Basic\Constant\DataBaseTableConfig;
 use Basic\Model\BasicBaseModel;
 
-class UsersModel extends BasicBaseModel
+class ContestRegisterModel extends BasicBaseModel
 {
     private static $_instance = null;
 
@@ -30,10 +30,10 @@ class UsersModel extends BasicBaseModel
     }
 
     protected function getTableName() {
-        return DataBaseTableConfig::USER_USERS;
+        return DataBaseTableConfig::CONTEST_CONTEST_REGISTER;
     }
 
     protected function getPrimaryId() {
-        return "user_id";
+        return null;
     }
 }
