@@ -6,7 +6,7 @@
  * Datetime: 11/28/2017 20:12
  */
 
- namespace Constant\DbConfig;
+ namespace Constant\DbConfig\Problem;
 
  class SimilarityInfoTableConfig
  {

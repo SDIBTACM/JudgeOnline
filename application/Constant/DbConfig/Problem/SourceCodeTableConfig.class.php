@@ -6,7 +6,7 @@
  * Datetime: 11/29/2017 18:14
  */
 
- namespace Constant\DbConfig;
+ namespace Constant\DbConfig\Problem;
 
  class SourceCodeTableConfig
  {

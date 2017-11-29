@@ -6,7 +6,7 @@
  * Datetime: 11/28/2017 15:10
  */
 
- namespace Constant\Dbconfig;
+ namespace Constant\Dbconfig\Contest;
 
  class ContestInfoTableConfig
  {

@@ -6,7 +6,7 @@
  * Datetime: 11/28/2017 20:18
  */
 
- namespace Constant\Dbconfig;
+ namespace Constant\Dbconfig\Problem;
 
  class SolutionInfoTableConfig
  {

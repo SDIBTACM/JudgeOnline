@@ -6,9 +6,9 @@
  * Datename: 11/29/2017/ 18:21
  */
 
- namespace Constant\Dbconfig;
+ namespace Constant\Dbconfig\Discuss;
 
- class DiscussThemeListTableConfig
+ class DiscussThemeTableConfig
  {
      const TABLE_NAME = "topic";
 

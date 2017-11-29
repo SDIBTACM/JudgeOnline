@@ -6,7 +6,7 @@
  * Datetime: 11/29/2017 18:28
  */
 
- namespace Constant\Dbconfig;
+ namespace Constant\Dbconfig\User;
 
  class UserInfoTableConfig
  {

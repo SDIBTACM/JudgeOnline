@@ -6,7 +6,7 @@
  * Datetime: 11/28/2017 17:04
  */
 
- namespace Constant\DbConfig;
+ namespace Constant\DbConfig\Extra;
 
  class SiteNewsTableConfig
  {

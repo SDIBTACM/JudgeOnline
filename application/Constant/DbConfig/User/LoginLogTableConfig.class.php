@@ -6,7 +6,7 @@
  * Datetime: 11/28/2017 14:40
  */
 
- namespace Constant\DbConfig;
+ namespace Constant\DbConfig\User;
 
  class LoginLogTableConfig 
  {

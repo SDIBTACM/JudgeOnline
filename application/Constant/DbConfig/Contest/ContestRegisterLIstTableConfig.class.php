@@ -6,9 +6,9 @@
  * Datetime: 11/29/2017 19:20
  */
 
- namespace Constant\Dbconfig;
+ namespace Constant\Dbconfig\Contest;
 
- class ContestRegisterListTableConfig 
+ class ContestRegisterTableConfig 
  {
      const TABLE_NAME = "contestreg";
 

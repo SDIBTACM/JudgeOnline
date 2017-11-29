@@ -6,9 +6,9 @@
  * Datetime: 11/28/2017 15:29
  */
 
- namespace Constant\DbConfig;
+ namespace Constant\DbConfig\Contest;
  
- class ContestProblemListTableConfig 
+ class ContestProblemTableConfig 
  {
      const TABLE_NAME = "contest_problem";
 

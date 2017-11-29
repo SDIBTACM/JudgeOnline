@@ -6,9 +6,9 @@
  * Datetime: 11/28/19:57
  */
 
- namespace Constant\DbConfig;
+ namespace Constant\DbConfig\Discuss;
 
- class DiscussReplyListTableConfig 
+ class DiscussReplyTableConfig 
  {
     const TABLE_NAME = "reply";
 

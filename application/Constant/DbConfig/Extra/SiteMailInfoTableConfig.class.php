@@ -6,7 +6,7 @@
  * Datatime: 11/28/2017 16:44
  */
 
- namespace Constant\DbConfig;
+ namespace Constant\DbConfig\Extra;
 
  class SiteMailInfoTableConfig
  {
