@@ -8,7 +8,7 @@
 
  namespace Constant\DbConfig\Problem;
 
- class CompliErrorInfoTableConfig 
+ class CompileErrorInfoTableConfig 
  {
      const TABLE_NAME = "compileinfo";
 
