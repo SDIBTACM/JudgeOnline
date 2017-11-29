@@ -8,7 +8,7 @@
 
  namespace Constant\Dbconfig;
 
- class ConstestRegisterListTableConfig 
+ class ContestRegisterListTableConfig 
  {
      const TABLE_NAME = "contestreg";
 
