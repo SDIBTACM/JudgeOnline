@@ -8,7 +8,7 @@
 
  namespace Constant\Dbconfig\Problem;
 
- class RuntimeErrorTableInfoConfig 
+ class RuntimeErrorTableInfoTableConfig 
  {
      const TABLE_NAME = "runtimeinfo";
 
