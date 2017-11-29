@@ -21,6 +21,7 @@
         'input_path' => 'varchar',
         'output_path' => 'varchar',
         'sample_input' => 'varchar',
+        'sample_output' => 'varchar',
         'hint' => 'text',
         'source' => 'varchar',
         'in_date' => 'datatime',
