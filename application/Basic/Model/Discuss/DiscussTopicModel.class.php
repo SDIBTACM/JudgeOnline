@@ -12,7 +12,7 @@ namespace Basic\Model\Discuss;
 use Basic\Constant\DataBaseTableConfig;
 use Basic\Model\BasicBaseModel;
 
-class TopicModel extends BasicBaseModel
+class DiscussTopicModel extends BasicBaseModel
 {
     private static $_instance = null;
 
