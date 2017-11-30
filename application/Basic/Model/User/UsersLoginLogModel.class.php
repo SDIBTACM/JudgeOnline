@@ -33,6 +33,6 @@ class UsersLoginLogModel extends BasicBaseModel
     }
 
     protected function getPrimaryId() {
-        return "user_id";
+        return null;
     }
 }

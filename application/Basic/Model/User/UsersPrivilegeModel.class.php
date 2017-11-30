@@ -33,7 +33,7 @@ class UsersPrivilegeModel extends BasicBaseModel
     }
 
     protected function getPrimaryId() {
-        return "user_id";
+        return null;
     }
 
 }

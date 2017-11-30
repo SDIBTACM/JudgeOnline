@@ -33,7 +33,7 @@ class ContestProblemModel extends BasicBaseModel
     }
 
     protected function getPrimaryId() {
-        return "contest_id";
+        return null;
     }
 
 }

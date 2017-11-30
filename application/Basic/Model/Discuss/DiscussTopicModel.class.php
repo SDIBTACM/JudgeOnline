@@ -34,6 +34,6 @@ class DiscussTopicModel extends BasicBaseModel
     }
 
     protected function getPrimaryId() {
-        return "rid";
+        return "tid";
     }
 }
