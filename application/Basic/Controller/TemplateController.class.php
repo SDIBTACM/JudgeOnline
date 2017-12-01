@@ -9,14 +9,17 @@
 namespace Basic\Controller;
 
 
+use Basic\Business\User\UsersBusiness;
 use Think\Controller;
 
 class TemplateController extends Controller
 {
     protected $userInfo = null;
 
-    protected $isNeedLogin = false;
-    protected $isNeedFilterSql = false;
+    protected $isNeedLogin = false;  // 是否需要登陆
+    protected $isNeedFilterSql = false; // 是否需要 sql 过滤
+    protected $isOnlyForTeacher = false;
+    protected $isOnlyForAdmin = false;
 
     public $module = null;
     public $controller = null;
@@ -44,11 +47,12 @@ class TemplateController extends Controller
 
     private function initLoginUserInfo() {
         if (!$this->isNeedLogin) return;
+
         $userId = session('user_id');
         if (!empty($userId)) {
             // TODO
             $field = array('user_id', 'nick');
-            //$this->userInfo = UserModel::instance()->getUserByUid($userId, $field);
+            $this->userInfo = UsersBusiness::instance()->getInfoByUserId($userId, $field);
         } else {
             redirect(U('Home/User/login'), 1, 'Please Login First!');
         }
@@ -77,17 +81,10 @@ class TemplateController extends Controller
         $this->assign($name, $data);
     }
 
+    // TODO 英文单词错误, 但是考试系统中也用到, 目前先不改, 等迁移完考试系统
     protected function ZaddWidgets($widgets) {
         foreach ($widgets as $name => $data) {
             $this->zadd($name, $data);
-        }
-    }
-
-    protected function initSessionByUserId($userId) {
-        session('user_id', $userId);
-        $_privileges = null;//PrivilegeModel::instance()->getPrivilegesByUserId($userId);
-        foreach ($_privileges as $privilege) {
-            session($privilege['rightstr'], true);
         }
     }
 

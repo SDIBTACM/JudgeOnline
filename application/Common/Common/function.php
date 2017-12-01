@@ -25,14 +25,14 @@ function resultReturn($code, $msg = '') {
 }
 
 function dbg($vars) {
-    if (C('ISDEBUG')) {
+    if (C('IS_DEBUG')) {
         dump($vars);
         echo "<hr/>";
     }
 }
 
 function ddbg($vars) {
-    if (C('ISDEBUG')) {
+    if (C('IS_DEBUG')) {
         dump($vars);
         echo "<hr/>";
         exit;
