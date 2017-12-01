@@ -13,7 +13,7 @@ use Basic\Model\BasicBaseModel;
 
 class UsersLoginLogModel extends BasicBaseModel
 {
-    private static $_instace = null;
+    private static $_instance = null;
 
     private function __construct() {
     }
@@ -22,10 +22,10 @@ class UsersLoginLogModel extends BasicBaseModel
     }
 
     public static function instance() {
-        if (is_null(self::$_instace)) {
-            self::$_instace = new self;
+        if (is_null(self::$_instance)) {
+            self::$_instance = new self;
         }
-        return self::$_instace;
+        return self::$_instance;
     }
 
     protected function getTableName() {
