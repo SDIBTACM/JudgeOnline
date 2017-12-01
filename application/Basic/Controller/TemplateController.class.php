@@ -37,10 +37,16 @@ class TemplateController extends Controller
         $this->initLoginUserInfo();
     }
 
+    public function _empty() {
+        header("HTTP/1.1 404 Not Found");
+        $this->display("./Public/ErrorPage/404.html");
+    }
+
     private function initLoginUserInfo() {
         if (!$this->isNeedLogin) return;
         $userId = session('user_id');
         if (!empty($userId)) {
+            // TODO
             $field = array('user_id', 'nick');
             //$this->userInfo = UserModel::instance()->getUserByUid($userId, $field);
         } else {
@@ -54,11 +60,11 @@ class TemplateController extends Controller
         }
     }
 
-    protected function alertError($errmsg, $url = '') {
+    protected function alertError($errMsg, $url = '') {
         $url = empty($url) ? "window.history.back();" : "location.href=\"{$url}\";";
         echo "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
-        echo "<script>function Mytips(){alert('{$errmsg}');{$url}}</script>";
-        echo "</head><body onload='Mytips()'></body></html>";
+        echo "<script>function myTips(){alert('{$errMsg}');{$url}}</script>";
+        echo "</head><body onload='myTips()'></body></html>";
         exit;
     }
 

@@ -1,4 +1,8 @@
 <?php
 return array(
-	//'配置项'=>'配置值'
+    //'配置项'=>'配置值'
+    'URL_HTML_SUFFIX' => '', //伪静态后缀名设置
+    'TMPL_VAR_IDENTIFY' => 'array', // 点语法的解析
+    'URL_MODEL' => 2,
+    'URL_CASE_INSENSITIVE' => false
 );
