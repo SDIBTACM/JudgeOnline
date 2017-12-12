@@ -9,56 +9,68 @@
 namespace Basic\Plugin\Log;
 namespace Basic\Log;
 
-use Think\Controller;
-
-class Log extends Controller
+class Log
 {
-    private static $_instance = null;
-    private static $_upstream = null;
-    private static $_message = null;
+    private $_upstream = null;
+    private $_message = null;
 
-    private static $config = array(
-        'logFilePath' => '/Runtime/Log',
-        'nameFormat' => 'Y-m-d',
-        'logFileMaxSize' => '10659840'
-    );
+    private static $logRecorded = array();
 
-    public static function instance() {
-        if (is_null(self::$_instance)) {
-            self::$_instance = new self;
-        }
-        return self::$_instance;
-    }
     /**
-     * @param $userid 用户ID,便于针对用户查错，如果无需记录，请传空字符串
-     * @param $message 消息,遵循php vsprint的占位符
+     * @example Log::info("user: {}  ip: {}  balabala", $user, $ip)
      */
 
-    public static function record($userid = "", $message)
-    {
-        self::$_message['time']  = self::microtime2string();
+    public static function info() {
+        $recordLog = new Log();
+        $recordLog->_message['time'] = self::microtime2string();
+        $recordLog->_message['level'] = "Info";
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
-        if($userid !== "")
-            self::$_message['userid'] = $userid;
-        self::dealBacktrace($backtrace);
-        self::writeLog();
+        $recordLog ->dealBacktrace($backtrace);
+        $recordLog->SaveLog();
+    }
+
+    /**
+     * @example Log::warn("user: {}  ip: {}  balabala", $user, $ip)
+     */
+
+    public static function warn() {
+        $recordLog = new Log();
+        $recordLog->_message['time'] = self::microtime2string();
+        $recordLog->_message['level'] = "Warning";
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+        $recordLog->dealBacktrace($backtrace);
+        $recordLog->SaveLog();
+
+    }
+
+    /**
+     * @example Log::error("user: {}  ip: {}  balabala", $user, $ip)
+     */
+
+    public static function error() {
+        $recordLog = new Log();
+        $recordLog->_message['time'] = self::microtime2string();
+        $recordLog->_message['level'] = "Error";
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+        $recordLog->dealBacktrace($backtrace);
+        $recordLog->SaveLog();
 
     }
 
     private static function microtime2string()
     {
-        list($msec, $sec) = explode(" ", microtime());
-        return date("Y-m-d H:i:s") . "." . sprintf("%04d",((int)($msec * 10000)));
+        list($sec, $tsec) = explode(" ", microtime());
+        return date("Y-m-d H:i:s", $tsec) . "." . sprintf("%04d",((int)($sec * 10000)));
     }
 
-    private static function dealBacktrace($backtrace)
+    private function dealBacktrace($backtrace)
     {
         $upOneLevel = $backtrace[0];
         $upTwoLevel = $backtrace[1];
 
-        self::getMessage($upOneLevel['args']);
+        $this->getMessage($upOneLevel['args']);
 
-        self::$_upstream  = array(
+        $this->_upstream  = array(
             'line' => $upOneLevel['line'],
             'function' => $upTwoLevel['function'],
             'class' => $upOneLevel['class'],
@@ -67,46 +79,60 @@ class Log extends Controller
 
     }
 
-    private static function getMessage($argvWillDeal) {
+    private function getMessage($argvWillDeal) {
 
-        self::$_message['ip'] = $_SERVER['REMOTE_ADDR'];
+        $this->_message['string'] = $argvWillDeal[0];
+        $this->_message['data'] = array();
+        $this->_message['finallyString'] = '';
 
-        self::$_message['string'] = $argvWillDeal[1];
-        self::$_message['data'] = array();
-        self::$_message['finallyString'] = '';
-
-        for($i = 3; $i < sizeof($argvWillDeal); $i += 1 ) {
-            array_push(self::$_message['data'], $argvWillDeal[$i]);
+        for($i = 1; $i < sizeof($argvWillDeal); $i += 1 ) {
+            array_push($this->_message['data'], $argvWillDeal[$i]);
         }
 
-        self::$_message['finallyString'] = vsprintf(self::$_message['string'], self::$_message['data']);
+        $this->_message['string'] = str_replace('{}', "%s", $this->_message['string']);
+
+        $this->_message['finallyString'] = vsprintf($this->_message['string'], $this->_message['data']);
+    }
+
+    private function SaveLog() {
+
+        $willWriteMessage = $this->_message['time'] .
+            "  Filename: " . $this->_upstream['file'] .
+            "  Class: " . $this->_upstream['class'] .
+            "  Function: " . $this->_upstream['function'] .
+            "  Level: " . $this->_message['level'] .
+            "  Line: " . $this->_upstream['line'] .
+            "  Message: " . $this->_message['finallyString'] . "\n";
+
+        array_push(self::$logRecorded, $willWriteMessage);
+
+        self::writeToFile();
 
     }
 
-    private static function writeLog() {
+    private static function writeToFile() {
 
-        if(is_dir(self::$config['logFilePath'])) {
-            mkdir(self::$config['logFilePath'], 0755, true);
+        $logFilePath = C('log_file_path');
+        $logNameFormat = C('log_name_format');
+        $logFileMaxSize = C('log_max_size');
+
+
+        if(is_dir($logFilePath)) {
+            mkdir($logFilePath, 0755, true);
         }
-        $fileName = self::$config['logFilePath'] . "/" . date(self::$config['nameFormat']) . "log";
+
+        $fileName = $logFilePath . date($logNameFormat) . 'log';
 
         $logFileToWriteResource = fopen($fileName,"a");
 
-        $willWriteMessage = self::$_message['time'] .
-            "  Filename: " . self::$_upstream['file'] .
-            "  Class: " . self::$_upstream['class'] .
-            "  Function: " . self::$_upstream['function'] .
-            "  Line: " . self::$_upstream['line'] .
-            "  Ip: " . self::$_message['ip'] .
-            "  User:" . self::$_message['userid'] .
-            "  " . self::$_message['finallyString'];
+        foreach (self::$logRecorded as $oneMessage)
+            fwrite($logFileToWriteResource, $oneMessage);
 
+        if($logFileMaxSize - filesize($fileName) <= 10240)
+            rename($fileName, $fileName = $logFilePath .
+                date($logNameFormat) . date("-H:i:s") . "log");
 
-        fwrite($logFileToWriteResource, $willWriteMessage);
-
-        if(filesize($fileName) - self::$config['logFileMaxSize'] <= 2560)
-            rename($fileName, $fileName = self::$config['logFilePath'] .
-                "/" . date(self::$config['nameFormat']) . date("-H:i:s") . "log");
+        self::$logRecorded = array();
 
     }
 
