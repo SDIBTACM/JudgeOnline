@@ -25,7 +25,7 @@ class Log
         $recordLog->_message['time'] = self::microtime2string();
         $recordLog->_message['level'] = "Info";
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
-        $recordLog ->dealBacktrace($backtrace);
+        $recordLog->dealBacktrace($backtrace);
         $recordLog->SaveLog();
     }
 
