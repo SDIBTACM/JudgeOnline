@@ -128,7 +128,7 @@ class Log
             mkdir($logFilePath, 0755, true);
         }
 
-        $fileName = $logFilePath . date($logNameFormat) . 'log';
+        $fileName = $logFilePath . date($logNameFormat) . '.log';
 
         $logFileToWriteResource = fopen($fileName,"a");
 
@@ -137,7 +137,7 @@ class Log
 
         if ($logFileMaxSize - filesize($fileName) <= 10240)
             rename($fileName, $fileName = $logFilePath .
-                date($logNameFormat) . date("-H:i:s") . "log");
+                date($logNameFormat) . date("-H:i:s") . ".log");
 
         self::$writingLogNow = 0;
         self::$logRecorded = array();
