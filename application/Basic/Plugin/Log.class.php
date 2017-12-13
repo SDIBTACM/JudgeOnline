@@ -107,8 +107,6 @@ class Log
 
         self::writeToFile();
 
-        self::$logRecorded = array();
-
     }
 
     private static function writeToFile() {
@@ -142,6 +140,7 @@ class Log
                 date($logNameFormat) . date("-H:i:s") . "log");
 
         self::$writingLogNow = 0;
+        self::$logRecorded = array();
 
     }
 
