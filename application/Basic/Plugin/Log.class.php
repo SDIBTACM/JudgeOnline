@@ -96,10 +96,10 @@ class Log
     private static function SaveLog($message) {
 
         $willWriteMessage = $message['time'] .
+            "  Level: " . $message['level'] .
             "  Filename: " . $message['file'] .
             "  Class: " . $message['class'] .
             "  Function: " . $message['function'] .
-            "  Level: " . $message['level'] .
             "  Line: " . $message['line'] .
             "  Message: " . $message['finallyString'] . "\n";
 
