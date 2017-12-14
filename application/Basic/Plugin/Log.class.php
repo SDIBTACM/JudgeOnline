@@ -130,10 +130,8 @@ class Log
 
         $fileName = $logFilePath . date($logNameFormat) . '.log';
 
-        $logFileToWriteResource = fopen($fileName,"a");
-
         foreach (self::$logRecorded as $oneMessage)
-            fwrite($logFileToWriteResource, $oneMessage);
+            error_log($oneMessage, 3, $fileName);
 
         if ($logFileMaxSize - filesize($fileName) <= 10240)
             rename($fileName, $fileName = $logFilePath .
