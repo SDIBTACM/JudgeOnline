@@ -55,7 +55,7 @@ class Log
     private static function microtime2string()
     {
         list($sec, $tsec) = explode(" ", microtime());
-        return date("Y-m-d H:i:s", $tsec) . "." . sprintf("%04d",((int)($sec * 10000)));
+        return date("Y-m-d H:i:s", $tsec) . "." . sprintf("%04d", ((int)($sec * 10000)));
     }
 
     private static function dealBacktrace($backtrace)
@@ -128,7 +128,7 @@ class Log
             mkdir($logFilePath, 0755, true);
         }
 
-        $fileName = $logFilePath . date($logNameFormat) . '.log';
+        $fileName = $logFilePath . date($logNameFormat) . ".log";
 
         foreach (self::$logRecorded as $oneMessage)
             error_log($oneMessage, 3, $fileName);
