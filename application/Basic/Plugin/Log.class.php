@@ -67,7 +67,7 @@ class Log
         $upstream  = array(
             'line' => $upOneLevel['line'],
             'function' => $upTwoLevel['function'],
-            'class' => $upOneLevel['class'],
+            'class' => $upTwoLevel['class'],
             'file' => $upOneLevel['file']
         );
 
