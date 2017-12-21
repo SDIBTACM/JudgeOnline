@@ -6,8 +6,7 @@
  * Datetime: 12/11/17 12:07
  */
 
-namespace Basic\Plugin\Log;
-namespace Basic\Log;
+namespace Basic\Plugin;
 
 class Log
 {
@@ -119,12 +118,12 @@ class Log
         if (is_null(self::$logRecorded))
             return ;
 
-        $logFilePath = C('log_file_path');
-        $logNameFormat = C('log_name_format');
-        $logFileMaxSize = C('log_max_size');
+        $logFilePath = C('LOG_FILE_PATH');
+        $logNameFormat = C('LOG_NAME_FORMAT');
+        $logFileMaxSize = C('LOG_MAX_SIZE');
 
 
-        if (is_dir($logFilePath)) {
+        if (!is_dir($logFilePath)) {
             mkdir($logFilePath, 0755, true);
         }
 
