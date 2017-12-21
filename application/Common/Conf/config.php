@@ -20,7 +20,7 @@ return array(
 
     'IS_DEBUG' => true,
 
-    'LOAD_EXT_CONFIG' => 'database,module', // 扩展配置文件名称
+    'LOAD_EXT_CONFIG' => 'database,module,log', // 扩展配置文件名称
 
     'MODULE_ALLOW_LIST' => array('Home', 'Zadmin', 'Exam', 'Teacher')
 );
