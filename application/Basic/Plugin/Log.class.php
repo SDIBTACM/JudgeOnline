@@ -16,7 +16,6 @@ class Log
     /**
      * @example Log::info("user: {}  ip: {}  balabala", $user, $ip)
      */
-
     public static function info() {
         $_message['time'] = self::microtime2string();
         $_message['level'] = "Info";
@@ -28,7 +27,6 @@ class Log
     /**
      * @example Log::warn("user: {}  ip: {}  balabala", $user, $ip)
      */
-
     public static function warn() {
         $_message['time'] = self::microtime2string();
         $_message['level'] = "Warn";
@@ -41,7 +39,6 @@ class Log
     /**
      * @example Log::error("user: {}  ip: {}  balabala", $user, $ip)
      */
-
     public static function error() {
         $_message['time'] = self::microtime2string();
         $_message['level'] = "Error";
