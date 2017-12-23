@@ -11,11 +11,11 @@ namespace Basic\Constant;
 
 class Result
 {
-    private $success;
+    public $success;
 
-    private $message;
+    public $message;
 
-    private $data;
+    public $data;
 
     /**
      * Result constructor.

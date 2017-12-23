@@ -10,157 +10,103 @@ namespace Basic\Plugin;
 
 class Log
 {
-    private static $logRecorded = array();
-
     /**
+     * @param $message
      * Log::info("user: {}  ip: {}  balabala", $user, $ip)
      */
-    public static function info() {
-        $_message['time'] = self::microtime2string();
-        $_message['level'] = "Info";
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
-        $message = self::dealBacktrace($backtrace);
-        self::SaveLog($message + $_message);
+    public static function info($message) {
+        @self::saveLog($message, __FUNCTION__, func_get_args());
     }
 
     /**
+     * @param $message
      * Log::warn("user: {}  ip: {}  balabala", $user, $ip)
      */
-    public static function warn() {
-        $_message['time'] = self::microtime2string();
-        $_message['level'] = "Warn";
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
-        $message = self::dealBacktrace($backtrace);
-        self::SaveLog($message + $_message);
-
+    public static function warn($message) {
+        @self::saveLog($message, __FUNCTION__, func_get_args());
     }
 
     /**
+     * @param $message
      * Log::error("user: {}  ip: {}  balabala", $user, $ip)
      */
-    public static function error() {
-        $_message['time'] = self::microtime2string();
-        $_message['level'] = "Error";
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
-        $message = self::dealBacktrace($backtrace);
-        self::SaveLog($message + $_message);
-
+    public static function error($message) {
+        @self::saveLog($message, __FUNCTION__, func_get_args());
     }
 
     /**
+     * @param $message
      * Log::debug("user: {}  ip: {}  balabala", $user, $ip)
      * before record message, it will check IS_DEBUG status
      */
-    public static function debug() {
-            $isDebug = C('IS_DEBUG');
-        if($isDebug === false) return ;
-
-        $_message['time'] = self::microtime2string();
-        $_message['level'] = "Error";
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
-        $message = self::dealBacktrace($backtrace);
-        self::SaveLog($message + $_message);
+    public static function debug($message) {
+        $isDebug = C('IS_DEBUG');
+        if ($isDebug === false) return;
+        @self::saveLog($message, __FUNCTION__, func_get_args());
     }
 
-    /**
-     * Log::fatal("user: {}  ip: {}  balabala", $user, $ip)
-     * when you use it to record a message, it will stop after record successfully
-     */
-    public static function fatal() {
-        $_message['time'] = self::microtime2string();
-        $_message['level'] = "Error";
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
-        $message = self::dealBacktrace($backtrace);
-        self::SaveLog($message + $_message);
-        exit(1);
-    }
-
-    private static function microtime2string()
-    {
-        list($sec, $tsec) = explode(" ", microtime());
-        return date("Y-m-d H:i:s", $tsec) . "." .
-            sprintf("%04d", ((int)($sec * 10000)));
-    }
-
-    private static function dealBacktrace($backtrace)
-    {
-        $upOneLevel = $backtrace[0];
-        $upTwoLevel = $backtrace[1];
-
-        $message = self::getMessage($upOneLevel['args']);
-
-        $upstream  = array(
-            'line' => $upOneLevel['line'],
-            'function' => $upTwoLevel['function'],
-            'class' => $upTwoLevel['class'],
-            'file' => $upOneLevel['file']
-        );
-
-        return $message + $upstream;
-
-    }
-
-    private static function getMessage($argvWillDeal) {
-
-        $message['string'] = $argvWillDeal[0];
-        $message['data'] = array();
-        $message['finallyString'] = '';
-
-        for ($i = 1; $i < sizeof($argvWillDeal); $i += 1 ) {
-            array_push($message['data'], $argvWillDeal[$i]);
+    private static function dealBacktrace() {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4);
+        $upstream = array();
+        foreach ($backtrace as $stackInfo) {
+            if ($stackInfo['class'] != __CLASS__) {
+                $upstream['function'] = $stackInfo['function'];
+                $upstream['class'] = $stackInfo['class'];
+                break;
+            } else {
+                $upstream['line'] = $stackInfo['line'];
+                $upstream['file'] = $stackInfo['file'];
+            }
         }
-
-        $message['string'] = str_replace('{}',
-            "%s",
-            $message['string']);
-
-        $message['finallyString'] = vsprintf($message['string'],
-            $message['data']);
-
-        return $message;
-    }
-
-    private static function SaveLog($message) {
-
-        $willWriteMessage = $message['time'] .
-            "  Level: " . $message['level'] .
-            "  Filename: " . $message['file'] .
-            "  Class: " . $message['class'] .
-            "  Function: " . $message['function'] .
-            "  Line: " . $message['line'] .
-            "  Message: " . $message['finallyString'] . "\n";
-
-        array_push(self::$logRecorded, $willWriteMessage);
-
-        self::writeToFile();
+        return $upstream;
 
     }
 
-    private static function writeToFile() {
+    private static function parseMessage($message, $args) {
+        $arguments = array();
+        array_shift($args);
+        foreach ($args as $arg) {
+            if (is_array($arg) || is_object($arg)) {
+                array_push($arguments, json_encode($arg));
+            } else {
+                array_push($arguments, $arg);
+            }
+        }
+        $message = str_replace('{}', "%s", $message);
+        return vsprintf($message, $arguments);
+    }
 
-        if (is_null(self::$logRecorded))
-            return ;
+    private static function saveLog($message, $level, $arguments) {
+        $trace = self::dealBacktrace();
+        $message = self::parseMessage($message, $arguments);
 
+        $millSecs = date('Y-m-d H:i:s') . '.' . substr(microtime(true) / 1000, -6, 4);
+        $logMsg = sprintf("%s [%s] [%s] [%s] [%s:%s] - %s",
+            $millSecs, getmypid(), $level, $trace['class'], $trace['function'], $trace['line'], $message);
+
+        self::writeToFile($logMsg);
+    }
+
+    private static function getLogFileNamePrefix() {
         $logFilePath = C('LOG_FILE_PATH');
         $logNameFormat = C('LOG_NAME_FORMAT');
-        $logFileMaxSize = C('LOG_MAX_SIZE');
-
 
         if (!is_dir($logFilePath)) {
             mkdir($logFilePath, 0755, true);
         }
 
-        $fileName = $logFilePath . date($logNameFormat) . ".log";
-
-        foreach (self::$logRecorded as $oneMessage)
-            error_log($oneMessage, 3, $fileName);
-
-        if ($logFileMaxSize - filesize($fileName) <= 10240)
-            rename($fileName, $fileName = $logFilePath .
-                date($logNameFormat) . date("-H:i:s") . ".log");
-
-        self::$logRecorded = array();
-
+        $fileName = $logFilePath . date($logNameFormat);
+        return $fileName;
     }
 
+    private static function writeToFile($message) {
+        $filenamePrefix = self::getLogFileNamePrefix();
+        $filename = $filenamePrefix . '.log';
+        error_log($message . "\n", 3, $filename);
+
+        $logFileMaxSize = C('LOG_MAX_SIZE');
+        if ($logFileMaxSize - filesize($filename) <= 10240) {
+            rename($filename, $filenamePrefix . date("-H:i:s") . ".log");
+        }
+    }
 }
