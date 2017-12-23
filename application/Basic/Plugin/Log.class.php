@@ -13,7 +13,7 @@ class Log
     private static $logRecorded = array();
 
     /**
-     * @example Log::info("user: {}  ip: {}  balabala", $user, $ip)
+     * Log::info("user: {}  ip: {}  balabala", $user, $ip)
      */
     public static function info() {
         $_message['time'] = self::microtime2string();
@@ -24,7 +24,7 @@ class Log
     }
 
     /**
-     * @example Log::warn("user: {}  ip: {}  balabala", $user, $ip)
+     * Log::warn("user: {}  ip: {}  balabala", $user, $ip)
      */
     public static function warn() {
         $_message['time'] = self::microtime2string();
@@ -36,7 +36,7 @@ class Log
     }
 
     /**
-     * @example Log::error("user: {}  ip: {}  balabala", $user, $ip)
+     * Log::error("user: {}  ip: {}  balabala", $user, $ip)
      */
     public static function error() {
         $_message['time'] = self::microtime2string();
@@ -47,10 +47,38 @@ class Log
 
     }
 
+    /**
+     * Log::debug("user: {}  ip: {}  balabala", $user, $ip)
+     */
+    public static function debug() {
+            $isDebug = C('IS_DEBUG');
+        if($isDebug === false) return ;
+
+        $_message['time'] = self::microtime2string();
+        $_message['level'] = "Error";
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+        $message = self::dealBacktrace($backtrace);
+        self::SaveLog($message + $_message);
+    }
+
+    /**
+     * Log::fatal("user: {}  ip: {}  balabala", $user, $ip)
+     * when you use it to record a message, it will stop after record successfully
+     */
+    public static function fatal() {
+        $_message['time'] = self::microtime2string();
+        $_message['level'] = "Error";
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+        $message = self::dealBacktrace($backtrace);
+        self::SaveLog($message + $_message);
+        exit(1);
+    }
+
     private static function microtime2string()
     {
         list($sec, $tsec) = explode(" ", microtime());
-        return date("Y-m-d H:i:s", $tsec) . "." . sprintf("%04d", ((int)($sec * 10000)));
+        return date("Y-m-d H:i:s", $tsec) . "." .
+            sprintf("%04d", ((int)($sec * 10000)));
     }
 
     private static function dealBacktrace($backtrace)
@@ -81,9 +109,12 @@ class Log
             array_push($message['data'], $argvWillDeal[$i]);
         }
 
-        $message['string'] = str_replace('{}', "%s", $message['string']);
+        $message['string'] = str_replace('{}',
+            "%s",
+            $message['string']);
 
-        $message['finallyString'] = vsprintf($message['string'], $message['data']);
+        $message['finallyString'] = vsprintf($message['string'],
+            $message['data']);
 
         return $message;
     }
