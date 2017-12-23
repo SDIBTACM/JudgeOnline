@@ -49,6 +49,7 @@ class Log
 
     /**
      * Log::debug("user: {}  ip: {}  balabala", $user, $ip)
+     * before record message, it will check IS_DEBUG status
      */
     public static function debug() {
             $isDebug = C('IS_DEBUG');
