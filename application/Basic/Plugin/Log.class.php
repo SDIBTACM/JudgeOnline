@@ -10,7 +10,6 @@ namespace Basic\Plugin;
 
 class Log
 {
-    private static $writingLogNow = 0;
     private static $logRecorded = array();
 
     /**
@@ -107,11 +106,6 @@ class Log
 
     private static function writeToFile() {
 
-        if(self::$writingLogNow === 0)
-            self::$writingLogNow = 1;
-        else
-            return ;
-
         if (is_null(self::$logRecorded))
             return ;
 
@@ -133,7 +127,6 @@ class Log
             rename($fileName, $fileName = $logFilePath .
                 date($logNameFormat) . date("-H:i:s") . ".log");
 
-        self::$writingLogNow = 0;
         self::$logRecorded = array();
 
     }
