@@ -72,7 +72,20 @@ class Log
                 array_push($arguments, $arg);
             }
         }
-        $message = str_replace('{}', "%s", $message);
+
+        $sizeOfArgs = sizeof($arguments);
+        $sizeOfPlace = substr_count($message,'{}');
+        if($sizeOfArgs > $sizeOfPlace) {
+            for($i = $sizeOfArgs - $sizeOfPlace; $i > 0; $i--) {
+                $message .=" {}";
+            }
+        } else if ($sizeOfArgs < $sizeOfPlace) {
+            for($i = $sizeOfPlace - $sizeOfArgs; $i > 0; $i--) {
+                array_push($arguments, "[PlaceHolder]");
+            }
+        }
+
+        $message = str_replace('{}', '%s', $message);
         return vsprintf($message, $arguments);
     }
 
