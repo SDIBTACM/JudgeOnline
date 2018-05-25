@@ -160,7 +160,7 @@ function L($name=null, $value=null) {
  * @param boolean $record 是否记录日志
  * @return void
  */
-function trace($value='[think]',$label='',$level='DEBUG',$record=false) {
+function trace($value='[think]',$label='',$level='debug',$record=false) {
     return Think\Think::trace($value,$label,$level,$record);
 }
 
@@ -482,7 +482,7 @@ function D($name='',$layer='') {
         $class      =   '\\Common\\'.$layer.'\\'.$name.$layer;
         $model      =   class_exists($class)? new $class($name) : new Think\Model($name);
     }else {
-        Think\Log::record('D方法实例化没找到模型类'.$class,Think\Log::NOTICE);
+        Think\Log::record('D方法实例化没找到模型类'.$class,'info');
         $model      =   new Think\Model(basename($name));
     }
     $_model[$name.$layer]  =  $model;

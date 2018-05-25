@@ -53,7 +53,7 @@ class CronRunBehavior {
             }
             if($update) {
                 // 记录Cron执行日志
-                \Think\Log::write(implode('',$log));
+                \Think\Log::record(implode('',$log),'error');
                 // 更新cron文件
                 $content  = "<?php\nreturn ".var_export($crons,true).";\n?>";
                 file_put_contents(RUNTIME_PATH.'~crons.php',$content);

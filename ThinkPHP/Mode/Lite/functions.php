@@ -186,7 +186,7 @@ function L($name=null, $value=null) {
  * @param boolean $record 是否记录日志
  * @return void|array
  */
-function trace($value='[think]',$label='',$level='DEBUG',$record=false) {
+function trace($value='[think]',$label='',$level='debug',$record=false) {
     return Think\Think::trace($value,$label,$level,$record);
 }
 

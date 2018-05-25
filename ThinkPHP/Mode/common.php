@@ -22,7 +22,6 @@ return array(
     // 别名定义
     'alias'     =>  array(
         'Think\Log'               => CORE_PATH . 'Log'.EXT,
-        'Think\Log\Driver\File'   => CORE_PATH . 'Log/Driver/File'.EXT,
         'Think\Exception'         => CORE_PATH . 'Exception'.EXT,
         'Think\Model'             => CORE_PATH . 'Model'.EXT,
         'Think\Db'                => CORE_PATH . 'Db'.EXT,

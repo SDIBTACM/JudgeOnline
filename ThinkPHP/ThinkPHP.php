@@ -37,13 +37,9 @@ defined('APP_PATH')     or define('APP_PATH',       dirname($_SERVER['SCRIPT_FIL
 defined('APP_STATUS')   or define('APP_STATUS',     ''); // 应用状态 加载对应的配置文件
 defined('APP_DEBUG')    or define('APP_DEBUG',      false); // 是否调试模式
 
-if(function_exists('saeAutoLoader')){// 自动识别SAE环境
-    defined('APP_MODE')     or define('APP_MODE',      'sae');
-    defined('STORAGE_TYPE') or define('STORAGE_TYPE',  'Sae');
-}else{
-    defined('APP_MODE')     or define('APP_MODE',       'common'); // 应用模式 默认为普通模式    
-    defined('STORAGE_TYPE') or define('STORAGE_TYPE',   'File'); // 存储类型 默认为File    
-}
+defined('APP_MODE')     or define('APP_MODE',       'common'); // 应用模式 默认为普通模式
+defined('STORAGE_TYPE') or define('STORAGE_TYPE',   'File'); // 存储类型 默认为File
+
 
 defined('RUNTIME_PATH') or define('RUNTIME_PATH',   APP_PATH.'Runtime/');   // 系统运行时目录
 defined('LIB_PATH')     or define('LIB_PATH',       realpath(THINK_PATH.'Library').'/'); // 系统核心类库目录
@@ -55,13 +51,18 @@ defined('COMMON_PATH')  or define('COMMON_PATH',    APP_PATH.'Common/'); // 应�
 defined('CONF_PATH')    or define('CONF_PATH',      COMMON_PATH.'Conf/'); // 应用配置目录
 defined('LANG_PATH')    or define('LANG_PATH',      COMMON_PATH.'Lang/'); // 应用语言目录
 defined('HTML_PATH')    or define('HTML_PATH',      APP_PATH.'Html/'); // 应用静态目录
-defined('LOG_PATH')     or define('LOG_PATH',       RUNTIME_PATH.'Logs/'); // 应用日志目录
+
 defined('TEMP_PATH')    or define('TEMP_PATH',      RUNTIME_PATH.'Temp/'); // 应用缓存目录
 defined('DATA_PATH')    or define('DATA_PATH',      RUNTIME_PATH.'Data/'); // 应用数据目录
 defined('CACHE_PATH')   or define('CACHE_PATH',     RUNTIME_PATH.'Cache/'); // 应用模板缓存目录
 defined('CONF_EXT')     or define('CONF_EXT',       '.php'); // 配置文件后缀
 defined('CONF_PARSE')   or define('CONF_PARSE',     '');    // 配置文件解析方法
 defined('ADDON_PATH')   or define('ADDON_PATH',     APP_PATH.'Addon');
+
+//日志信息
+defined('LOG_PATH')     or define('LOG_PATH',       RUNTIME_PATH.'Logs/'); // 应用日志目录
+defined('LOG_MAX_SIZE') or define('LOG_MAX_SIZE',   10485760); // 单日志文件最大空间
+defined('LOG_NAME_FORMAT')or define('LOG_NAME_FORMAT', 'Y-m-d');//
 
 // 系统信息
 if(version_compare(PHP_VERSION,'5.4.0','<')) {

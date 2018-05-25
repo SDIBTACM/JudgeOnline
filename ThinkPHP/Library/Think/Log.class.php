@@ -1,104 +1,139 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2014 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
-// +----------------------------------------------------------------------
-namespace Think;
 /**
- * 日志处理类
+ *
+ * Created by dream.
+ * User: Boxjan
+ * Datetime: 12/11/17 12:07
  */
-class Log {
 
-    // 日志级别 从上到下，由低到高
-    const EMERG     = 'EMERG';  // 严重错误: 导致系统崩溃无法使用
-    const ALERT     = 'ALERT';  // 警戒性错误: 必须被立即修改的错误
-    const CRIT      = 'CRIT';  // 临界值错误: 超过临界值的错误，例如一天24小时，而输入的是25小时这样
-    const ERR       = 'ERR';  // 一般错误: 一般性错误
-    const WARN      = 'WARN';  // 警告性错误: 需要发出警告的错误
-    const NOTICE    = 'NOTIC';  // 通知: 程序可以运行但是还不够完美的错误
-    const INFO      = 'INFO';  // 信息: 程序输出信息
-    const DEBUG     = 'DEBUG';  // 调试: 调试信息
-    const SQL       = 'SQL';  // SQL：SQL语句 注意只在调试模式开启时有效
+namespace Think;
 
-    // 日志信息
-    static protected $log       =  array();
+class Log
+{
+    const ERR       = 'error';  // 一般错误: 一般性错误
+    const WARN      = 'warn';  // 警告性错误: 需要发出警告的错误
+    const INFO      = 'info';  // 信息: 程序输出信息
+    const DEBUG     = 'debug';  // 调试: 调试信息
+    const SQL       = 'debug';  // SQL：SQL语句 注意只在调试模式开启时有效
 
-    // 日志存储
-    static protected $storage   =   null;
-
-    // 日志初始化
-    static public function init($config=array()){
-        $type   =   isset($config['type']) ? $config['type'] : 'File';
-        $class  =   strpos($type,'\\')? $type: 'Think\\Log\\Driver\\'. ucwords(strtolower($type));           
-        unset($config['type']);
-        self::$storage = new $class($config);
+    /**
+     * @param $message
+     * Log::info("user: {}  ip: {}  balabala", $user, $ip)
+     */
+    public static function info($message) {
+        @self::saveLog($message, __FUNCTION__, func_get_args());
     }
 
     /**
-     * 记录日志 并且会过滤未经设置的级别
-     * @static
-     * @access public
-     * @param string $message 日志信息
-     * @param string $level  日志级别
-     * @param boolean $record  是否强制记录
-     * @return void
+     * @param $message
+     * Log::warn("user: {}  ip: {}  balabala", $user, $ip)
      */
-    static function record($message,$level=self::ERR,$record=false) {
-        if($record || false !== strpos(C('LOG_LEVEL'),$level)) {
-            self::$log[] =   "{$level}: {$message}\r\n";
-        }
+    public static function warn($message) {
+        @self::saveLog($message, __FUNCTION__, func_get_args());
     }
 
     /**
-     * 日志保存
-     * @static
-     * @access public
-     * @param integer $type 日志记录方式
-     * @param string $destination  写入目标
-     * @return void
+     * @param $message
+     * Log::error("user: {}  ip: {}  balabala", $user, $ip)
      */
-    static function save($type='',$destination='') {
-        if(empty(self::$log)) return ;
-
-        if(empty($destination)){
-            $destination = C('LOG_PATH').date('y_m_d').'.log';
-        }
-        if(!self::$storage){
-            $type 	= 	$type ? : C('LOG_TYPE');
-            $class  =   'Think\\Log\\Driver\\'. ucwords($type);
-            self::$storage = new $class();            
-        }
-        $message    =   implode('',self::$log);
-        self::$storage->write($message,$destination);
-        // 保存后清空日志缓存
-        self::$log = array();
+    public static function error($message) {
+        @self::saveLog($message, __FUNCTION__, func_get_args());
     }
 
     /**
-     * 日志直接写入
-     * @static
-     * @access public
-     * @param string $message 日志信息
-     * @param string $level  日志级别
-     * @param integer $type 日志记录方式
-     * @param string $destination  写入目标
-     * @return void
+     * @param $message
+     * Log::debug("user: {}  ip: {}  balabala", $user, $ip)
+     * before record message, it will check IS_DEBUG status
      */
-    static function write($message,$level=self::ERR,$type='',$destination='') {
-        if(!self::$storage){
-            $type 	= 	$type ? : C('LOG_TYPE');
-            $class  =   'Think\\Log\\Driver\\'. ucwords($type);
-            $config['log_path'] = C('LOG_PATH');
-            self::$storage = new $class($config);            
+    public static function debug($message) {
+        $isDebug = C('IS_DEBUG');
+        if ($isDebug === false) return;
+        @self::saveLog($message, __FUNCTION__, func_get_args());
+    }
+
+    public static function record($message, $level) {
+        $millSecs = date('Y-m-d H:i:s') . '.' . substr(microtime(true) / 1000, -6, 4);
+        $logMsg = sprintf("%s [%s] [%s] - %s",
+            $millSecs, getmypid(), $level, $message);
+        self::writeToFile($logMsg);
+    }
+
+    private static function dealBacktrace() {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4);
+        $upstream = array();
+        foreach ($backtrace as $stackInfo) {
+            if ($stackInfo['class'] != __CLASS__) {
+                $upstream['function'] = $stackInfo['function'];
+                $upstream['class'] = $stackInfo['class'];
+                break;
+            } else {
+                $upstream['line'] = $stackInfo['line'];
+                $upstream['file'] = $stackInfo['file'];
+            }
         }
-        if(empty($destination)){
-            $destination = C('LOG_PATH').date('y_m_d').'.log';        
+        return $upstream;
+
+    }
+
+    private static function parseMessage($message, $args) {
+        $arguments = array();
+        array_shift($args);
+        foreach ($args as $arg) {
+            if (is_array($arg) || is_object($arg)) {
+                array_push($arguments, json_encode($arg));
+            } else {
+                array_push($arguments, $arg);
+            }
         }
-        self::$storage->write("{$level}: {$message}", $destination);
+
+        $sizeOfArgs = sizeof($arguments);
+        $sizeOfPlace = substr_count($message,'{}');
+        if($sizeOfArgs > $sizeOfPlace) {
+            for($i = $sizeOfArgs - $sizeOfPlace; $i > 0; $i--) {
+                $message .=" {}";
+            }
+        } else if ($sizeOfArgs < $sizeOfPlace) {
+            for($i = $sizeOfPlace - $sizeOfArgs; $i > 0; $i--) {
+                array_push($arguments, "[PlaceHolder]");
+            }
+        }
+
+        $message = str_replace('{}', '%s', $message);
+        return vsprintf($message, $arguments);
+    }
+
+    private static function saveLog($message, $level, $arguments) {
+        $trace = self::dealBacktrace();
+        $message = self::parseMessage($message, $arguments);
+
+        $millSecs = date('Y-m-d H:i:s') . '.' . substr(microtime(true) / 1000, -6, 4);
+        $logMsg = sprintf("%s [%s] [%s] [%s] [%s:%s] - %s",
+            $millSecs, getmypid(), $level, $trace['class'], $trace['function'], $trace['line'], $message);
+
+        self::writeToFile($logMsg);
+    }
+
+    private static function getLogFileNamePrefix() {
+        $logFilePath =  LOG_PATH;
+        $logNameFormat = LOG_NAME_FORMAT;
+
+        if (!is_dir($logFilePath)) {
+            mkdir($logFilePath, 0755, true);
+        }
+
+        $fileName = $logFilePath . date($logNameFormat);
+
+        return $fileName;
+    }
+
+    private static function writeToFile($message) {
+        $filenamePrefix = self::getLogFileNamePrefix();
+        $filename = $filenamePrefix . '.log';echo $filename .  $message. "<br>";
+        error_log($message . "\n", 3, $filename);
+
+        $logFileMaxSize = LOG_MAX_SIZE;
+        if ($logFileMaxSize - filesize($filename) <= 10240) {
+            rename($filename, $filenamePrefix . date("-H:i:s") . ".log");
+        }
     }
 }

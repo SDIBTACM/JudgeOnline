@@ -182,7 +182,7 @@ function L($name=null, $value=null) {
  * @param boolean $record 是否记录日志
  * @return void|array
  */
-function trace($value='[think]',$label='',$level='DEBUG',$record=false) {
+function trace($value='[think]',$label='',$level='debug',$record=false) {
     return Think\Think::trace($value,$label,$level,$record);
 }
 
@@ -595,7 +595,7 @@ function D($name='',$layer='') {
         }
         $model      =   class_exists($class)? new $class($name) : new Think\Model($name);
     }else {
-        Think\Log::record('D方法实例化没找到模型类'.$class,Think\Log::NOTICE);
+        Think\Log::record('D方法实例化没找到模型类'.$class,"info");
         $model      =   new Think\Model(basename($name));
     }
     $_model[$name.$layer]  =  $model;
@@ -813,7 +813,7 @@ function strip_whitespace($content) {
  * @return void
  */
 function throw_exception($msg, $type='Think\\Exception', $code=0) {
-    Think\Log::record('建议使用E方法替代throw_exception',Think\Log::NOTICE);
+    Think\Log::record('建议使用E方法替代throw_exception','info');
     if (class_exists($type, false))
         throw new $type($msg, $code);
     else

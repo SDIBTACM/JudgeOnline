@@ -224,7 +224,7 @@ class Think {
             $error['line']  =   $e->getLine();
         }
         $error['trace']     =   $e->getTraceAsString();
-        Log::record($error['message'],Log::ERR);
+        Log::record($error['message'],LOG::ERR);
         // 发送404信息
         header('HTTP/1.1 404 Not Found');
         header('Status:404 Not Found');
@@ -249,19 +249,18 @@ class Think {
           case E_USER_ERROR:
             ob_end_clean();
             $errorStr = "$errstr ".$errfile." 第 $errline 行.";
-            if(C('LOG_RECORD')) Log::write("[$errno] ".$errorStr,Log::ERR);
+            if(C('LOG_RECORD')) Log::record("[$errno] ".$errorStr,Log::ERR);
             self::halt($errorStr);
             break;
           default:
             $errorStr = "[$errno] $errstr ".$errfile." 第 $errline 行.";
-            self::trace($errorStr,'','NOTIC');
+            self::trace($errorStr,'','info');
             break;
       }
     }
     
     // 致命错误捕获
     static public function fatalError() {
-        Log::save();
         if ($e = error_get_last()) {
             switch($e['type']){
               case E_ERROR:
@@ -323,7 +322,7 @@ class Think {
      * @param boolean $record 是否记录日志
      * @return void|array
      */
-    static public function trace($value='[think]',$label='',$level='DEBUG',$record=false) {
+    static public function trace($value='[think]',$label='',$level='debug',$record=false) {
         static $_trace =  array();
         if('[think]' === $value){ // 获取trace信息
             return $_trace;
@@ -332,7 +331,7 @@ class Think {
             $level  =   strtoupper($level);
             
             if((defined('IS_AJAX') && IS_AJAX) || !C('SHOW_PAGE_TRACE')  || $record) {
-                Log::record($info,$level,$record);
+                Log::record($info,$level);
             }else{
                 if(!isset($_trace[$level]) || count($_trace[$level])>C('TRACE_MAX_RECORD')) {
                     $_trace[$level] =   array();
