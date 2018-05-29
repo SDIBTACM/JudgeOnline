@@ -46,7 +46,11 @@ class Log
     }
 
     private static function dealBacktrace() {
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4);
+        if (version_compare(PHP_VERSION,'5.3.6','<')) {
+            $backtrace = debug_backtrace();
+        } else {
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4);
+        }
         $upstream = array();
         foreach ($backtrace as $stackInfo) {
             if ($stackInfo['class'] != __CLASS__) {
@@ -93,7 +97,7 @@ class Log
         $trace = self::dealBacktrace();
         $message = self::parseMessage($message, $arguments);
 
-        $millSecs = date('Y-m-d H:i:s') . '.' . substr(microtime(true) / 1000, -6, 4);
+        $millSecs = date('Y-m-d H:i:s') . '.' . (int)(microtime(true) * 10000) % 10000;
         $logMsg = sprintf("%s [%s] [%s] [%s] [%s:%s] - %s",
             $millSecs, getmypid(), $level, $trace['class'], $trace['function'], $trace['line'], $message);
 

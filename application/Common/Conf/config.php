@@ -18,7 +18,7 @@ return array(
 
     'URL_CASE_INSENSITIVE' => false,
 
-    'IS_DEBUG' => true,
+    'LOG_LEVEL'  =>'EMERG,ALERT,CRIT,ERR',
 
     'LOAD_EXT_CONFIG' => 'database,module,log', // 扩展配置文件名称
 
