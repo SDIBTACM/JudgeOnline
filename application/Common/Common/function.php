@@ -38,3 +38,7 @@ function ddbg($vars) {
         exit;
     }
 }
+
+function queue($listname) {
+    return \Basic\Plugin\RedisQueue::instance($listname);
+}
