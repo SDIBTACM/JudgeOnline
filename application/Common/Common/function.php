@@ -42,3 +42,7 @@ function ddbg($vars) {
 function queue($listname) {
     return \Basic\Plugin\RedisQueue::instance($listname);
 }
+
+function set($setname) {
+    return \Basic\Plugin\RedisSet::instance($setname);
+}
