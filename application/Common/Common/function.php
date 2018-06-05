@@ -46,3 +46,7 @@ function queue($listname) {
 function set($setname) {
     return \Basic\Plugin\RedisSet::instance($setname);
 }
+
+function queue($hashname) {
+    return \Basic\Plugin\RedisHash::instance($hashname);
+}

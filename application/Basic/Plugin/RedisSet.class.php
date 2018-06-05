@@ -10,7 +10,7 @@ namespace  Basic\Plugin;
 
 class RedisSet extends Redis
 {
-    protected $SetName = null;
+    protected $setName = null;
 
     public static function instance($setname) {
         $_instance = new self;
@@ -31,9 +31,8 @@ class RedisSet extends Redis
     }
 
     public function clear() {
-        while ($this->handle->getSize())
-            $this->handle->sPop($this->setName);
-        return $this->handle->getSize();
+        while ($this->getSize()) $this->handle->sPop($this->setName);
+        return $this->getSize();
     }
 
     public function delete($willDelete) {
