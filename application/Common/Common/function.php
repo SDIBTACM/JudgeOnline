@@ -47,6 +47,6 @@ function set($setname) {
     return \Basic\Plugin\RedisSet::instance($setname);
 }
 
-function queue($hashname) {
+function hash($hashname) {
     return \Basic\Plugin\RedisHash::instance($hashname);
 }

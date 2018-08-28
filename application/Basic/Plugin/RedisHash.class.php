@@ -8,7 +8,7 @@
 
 namespace  Basic\Plugin;
 
-class RedisSet extends Redis
+class RedisHash extends Redis
 {
     protected $hashName = null;
 
@@ -30,7 +30,7 @@ class RedisSet extends Redis
         return $this->handle->hLen($this->hashName);
     }
 
-    public funtion clear() {
+    public function clear() {
         $keys = $this->handle->hKeys($this->hashName);
         foreach ($keys as $key) $this->handle->hDel($this->hashName, $key);
         return $this->getNum();
