@@ -399,12 +399,13 @@ abstract class Driver {
     }
 
     /**
-     * 字段名分析
+     * 字段和表名处理
      * @access protected
      * @param string $key
+     * @param bool   $strict
      * @return string
      */
-    protected function parseKey(&$key) {
+    protected function parseKey(&$key, $strict = false) {
         return $key;
     }
     
@@ -687,7 +688,7 @@ abstract class Driver {
                 if(is_numeric($key)) {
                     $array[] =  $this->parseKey($val);
                 }else{
-                    $array[] =  $this->parseKey($key).' '.$val;
+                    $array[] =  $this->parseKey($key, true).' '.$val;
                 }
             }
             $order   =  implode(',',$array);
