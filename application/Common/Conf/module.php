@@ -16,5 +16,9 @@ return array(
 
     'zamdin' => array(),
 
-    'teacher' => array()
+    'teacher' => array(),
+
+    'problem' => array(),
+
+    'contest' => array(),
 );

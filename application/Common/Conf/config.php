@@ -20,7 +20,7 @@ return array(
 
     'LOG_LEVEL'  =>'EMERG,ALERT,CRIT,ERR',
 
-    'LOAD_EXT_CONFIG' => 'database,module,log', // 扩展配置文件名称
+    'LOAD_EXT_CONFIG' => 'database,module,log,session,redis', // 扩展配置文件名称
 
-    'MODULE_ALLOW_LIST' => array('Home', 'Zadmin', 'Exam', 'Teacher')
+    'MODULE_ALLOW_LIST' => array('Home', 'Zadmin', 'Exam', 'Teacher', 'Contest', 'Problem')
 );

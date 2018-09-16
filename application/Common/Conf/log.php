@@ -5,6 +5,7 @@
  * User: Boxjan
  * Datetime: 12/21/17 13:17
  */
+
 return array(
     'LOG_MAX_SIZE' => 10485760,
 
