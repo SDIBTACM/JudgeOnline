@@ -1,5 +1,6 @@
 <?php
 /**
+ * Redis 配置
  *
  * Created by Dream.
  * User: Boxjan

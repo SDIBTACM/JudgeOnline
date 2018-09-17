@@ -1,5 +1,6 @@
 <?php
 /**
+ * 会话机制配置
  *
  * Created by Dream.
  * User: Boxjan
@@ -7,7 +8,7 @@
  */
 
 return array(
-    'SESSION_TYPE' => 'Redis',
+    //'SESSION_TYPE' => 'Redis',
 
     'SESSION_EXPIRE' => 3600,
 

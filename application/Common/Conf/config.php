@@ -18,6 +18,10 @@ return array(
 
     'URL_CASE_INSENSITIVE' => false,
 
+    'REVERSE_PROXY' => false, // 是否处于反向代理后面
+
+    'PROXY_REAL_IP_HEAD' => 'HTTP_CLIENT_IP', // 通过反向代理获取真实用户IP 的 header 标志
+
     'LOG_LEVEL'  =>'EMERG,ALERT,CRIT,ERR',
 
     'LOAD_EXT_CONFIG' => 'database,module,log,session,redis', // 扩展配置文件名称
