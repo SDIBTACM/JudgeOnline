@@ -77,14 +77,9 @@ class TemplateController extends Controller
         $this->display($view);
     }
 
-    protected function zadd($name, $data) {
-        $this->assign($name, $data);
-    }
-
-    // TODO 英文单词错误, 但是考试系统中也用到, 目前先不改, 等迁移完考试系统
-    protected function ZaddWidgets($widgets) {
+    protected function addWidgets($widgets) {
         foreach ($widgets as $name => $data) {
-            $this->zadd($name, $data);
+            $this->assign($name, $data);
         }
     }
 
