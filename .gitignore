@@ -45,3 +45,4 @@ Temporary Items
 .idea/*
 application/Runtime/*
 *.DS_Store
+application/Common/Conf/*
