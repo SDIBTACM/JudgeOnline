@@ -35,7 +35,7 @@ class Redis
         // 建立连接
 
         $this->config['host'] = C('REDIS_HOST') ? C('REDIS_HOST') : '127.0.0.1';
-        $this->config['port'] = C('REDIS_PORT') ? C('REDIS_HOST') : 6379;
+        $this->config['port'] = C('REDIS_PORT') ? C('REDIS_PORT') : 6379;
         $this->config['password'] = C('REDIS_PASSWORD') ? C('REDIS_PASSWORD') : '';
         $this->config['timeout'] = C('REDIS_TIMEOUT') ? C('REDIS_TIMEOUT') : 0;
         $this->config['select'] = C('REDIS_SELECT') ? C('REDIS_SELECT') : 0;
