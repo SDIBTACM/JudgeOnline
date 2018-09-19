@@ -48,13 +48,29 @@ class TemplateController extends Controller
     private function initLoginUserInfo() {
         if (!$this->isNeedLogin) return;
 
+        if (!$this->_importUserInfoFromSession()) {
+            redirect(U('Home/User/login'), 1, 'Please Login First!');
+        }
+    }
+
+    public function initUserInfo() {
+        $this->_importUserInfoFromSession();
+    }
+
+    private function _importUserInfoFromSession() {
         $userId = session('user_id');
         if (!empty($userId)) {
-            // TODO
             $field = array('user_id', 'nick');
             $this->userInfo = UsersBusiness::instance()->getInfoByUserId($userId, $field);
+            \Basic\Plugin\Log::debug("{}", session());
+            if ($this->isSuperAdmin()) {
+                $this->userInfo['privilege'] = 'administrator';
+            } else if ($this->isTeacher()) {
+                $this->userInfo['privilege'] = 'teacher';
+            }
+            return true;
         } else {
-            redirect(U('Home/User/login'), 1, 'Please Login First!');
+            return false;
         }
     }
 
