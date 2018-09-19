@@ -62,7 +62,6 @@ class TemplateController extends Controller
         if (!empty($userId)) {
             $field = array('user_id', 'nick');
             $this->userInfo = UsersBusiness::instance()->getInfoByUserId($userId, $field);
-            \Basic\Plugin\Log::debug("{}", session());
             if ($this->isSuperAdmin()) {
                 $this->userInfo['privilege'] = 'administrator';
             } else if ($this->isTeacher()) {
