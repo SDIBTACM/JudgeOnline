@@ -3,16 +3,15 @@
  * drunk , fix later
  * Created by Magic.
  * User: jiaying
- * Datetime: 01/12/2017 20:07
+ * Datetime: 27/11/2017 23:27
  */
 
-namespace Zadmin\Controller;
+namespace Home\Controller;
 
 
 class TemplateController extends \Basic\Controller\TemplateController
 {
     public function _initialize() {
-        $this->isNeedLogin = true;
         parent::_initialize();
     }
 }
