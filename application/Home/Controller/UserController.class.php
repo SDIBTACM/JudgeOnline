@@ -9,7 +9,9 @@
 namespace Home\Controller;
 
 
+use Basic\Plugin\Log;
 use Home\Model\LoginModel;
+use Home\Model\UsersPrivilegeModel;
 
 class UserController extends TemplateController
 {
@@ -22,31 +24,69 @@ class UserController extends TemplateController
     }
 
     public function login() {
-        $this->auto_display();
+        $this->initUserInfo();
+        if (!empty($this->userInfo['user_id'])) {
+            return $this->alertError('您已经登陆!', U('Index/index'));
+        }
+
+        if (IS_POST) {
+            return $this->doLogin();
+        } else {
+            return $this->auto_display();
+        }
+    }
+
+    public function logout() {
+        $this->initUserInfo();
+        if (empty($this->userInfo['user_id'])) {
+            $this->alertError('您未登陆!', U('Home/User/login'));
+        }
+
+        return $this->doLogout();
     }
 
     public function modify() {
-        $this->auto_display();
+        $this->initUserInfo();
+        if (empty($this->userInfo['user_id'])) {
+            $this->alertError('您未登陆!', U('Home/User/login'));
+        }
+
+        if (IS_POST) {
+            //TODO update user info
+        } else {
+            return $this->auto_display();
+        }
     }
 
     public function doLogin() {
-        if (!empty($this->userInfo['user_id'])) {
-            $this->alertError('您已经登陆!');
-        }
 
-        $userId = I('post.userId', '', 'trim,htmlspecialchars');
+        $userId = I('post.username', '', 'trim,htmlspecialchars');
         $password = I('post.password', '', 'trim,htmlspecialchars');
 
         $result = LoginModel::instance()->checkUserPassword($userId, $password);
         if (!$result->isSuccess()) {
+            log::info("{} login fail! reason: {}", $userId, $result->getMessage());
             $this->alertError($result->getMessage());
         }
 
         // TODO vip contest check
 
-        // TODO init session
+        session('user_id', $userId);
 
-        // TODO init login log
+        if (UsersPrivilegeModel::isAdmin($userId)) {
+            session('administrator', 1);
+        }
+        if (UsersPrivilegeModel::isProblemSetter($userId)) {
+            session('problem_editor', 1);
+        }
+        if (UsersPrivilegeModel::isContestCreator($userId)) {
+            session('contest_creator', 1);
+        }
+        if (UsersPrivilegeModel::isSourceBrowser($userId)) {
+            session('source_browser', 1);
+        }
+        Log::info("{} login success", $userId);
+
     }
 
     public function doLogout() {
