@@ -8,7 +8,7 @@
  */
 
 return array(
-    //'SESSION_TYPE' => 'Redis',
+    'SESSION_TYPE' => 'Redis',
 
     'SESSION_EXPIRE' => 3600,
 

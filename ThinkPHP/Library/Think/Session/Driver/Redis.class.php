@@ -51,7 +51,7 @@ class Redis
         if (0 != $this->config['select']) {
             $this->handler->select($this->config['select']);
         }
-        return $this->handler->ping() == 'PONG';
+        return true;
     }
     /**
      * 关闭Session
@@ -83,7 +83,8 @@ class Redis
      */
     public function write($sessID, $sessData)
     {
-
+        \Basic\Plugin\Log::debug("{} {}", $this->config['prefix'] . $sessID, $sessData);
+        \Basic\Plugin\Log::debug("{}", $this->config);
         if ($this->config['expire'] > 0) {
             return $this->handler->setex($this->config['prefix'] . $sessID, $this->config['expire'], $sessData);
         } else {
