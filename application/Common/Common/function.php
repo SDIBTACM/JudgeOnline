@@ -65,6 +65,10 @@ function curIp() {
  * @return bool
  */
 function compareIpWithSubnetMask($src, $beCompare, $mask = 0) {
+    if ($mask == 0) {
+        return true;
+    }
+
     if (filter_var($src, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) &&
         filter_var($beCompare, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && $mask <= 32) { // ipv4
 
