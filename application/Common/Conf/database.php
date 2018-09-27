@@ -17,9 +17,9 @@ return array(
 
     'DB_NAME' => 'onlinejudge',
 
-    'DB_USER' => 'root',
+    'DB_USER' => 'oj',
 
-    'DB_PWD' => 'root',
+    'DB_PWD' => '123456',
 
     'DB_PREFIX' => '',
 );
